@@ -1,0 +1,22 @@
+import sys
+from PIL import Image
+import image
+
+orgFileName = sys.argv[1]
+newFileName = sys.argv[2]
+hueMin = float(sys.argv[3])
+hueMax = float(sys.argv[4])
+
+img = Image.open(orgFileName)
+(width,height) = img.size
+pix = img.load()
+for jj in range(height):
+    for ii in range(width):
+        (r,g,b) = pix[ii,jj]
+        (h,s,v) = image.hsvFromRgb(r,g,b)
+        if hueMin <= h < hueMax:
+            (r,g,b) = (255,255,255)
+        else:
+            (r,g,b) = (0,0,0)
+        pix[ii,jj] = (r,g,b)
+img.save(newFileName)
