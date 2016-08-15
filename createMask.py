@@ -1,6 +1,6 @@
 import sys
 from PIL import Image
-import image
+import HSVChange
 
 orgFileName = sys.argv[1]
 hsvFlag = sys.argv[2]   # h/s/v
@@ -15,7 +15,7 @@ def createMask(strFileName,hsvFlag,fMin,fMax):
     for jj in range(height):
         for ii in range(width):
             (r,g,b) = pix[ii,jj]
-            (h,s,v) = image.hsvFromRgb(r,g,b)
+            (h,s,v) = HSVChange.hsvFromRgb(r,g,b)
             val = 0
             if hsvFlag == 'h': val = h
             elif hsvFlag == 's': val = s

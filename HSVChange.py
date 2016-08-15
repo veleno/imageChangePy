@@ -50,14 +50,39 @@ def rgbFromHsv(h,s,v):
             b *= 1 - s * f
     return (int(r*256),int(g*256),int(b*256))
 
-def imageFilter(srcFileName, dstFileName, args):
-    img = Image.open(srcFileName)
+    
+
+def imageFilter(img, args):
     width, height = img.size
     pix = img.load()
     for jj in range(height):
         for ii in range(width):
+            #print pix[ii,jj]
+            (r,g,b) = pix[ii,jj]
+            (h,s,v) = hsvFromRgb(r,g,b)
+            #print r,g,b,a
+            #print h
+            #print len(args)
             for arg in args:
-
+                #print arg
+                if 'hueMax' in arg and 'hueMax' in arg and (h < arg['hueMin'] or h > arg['hueMax']):
+                    continue
+                if 'satMax' in arg and 'satMax' in arg and (s < arg['satMin'] or s > arg['satMax']):
+                    continue
+                if 'valMax' in arg and 'valMax' in arg and (v < arg['valMin'] or v > arg['valMax']):
+                    continue
+                if 'hueAdd' in arg:
+                    h += arg['hueAdd']
+                if 'satAdd' in arg:
+                    s += arg['satAdd']
+                if 'valAdd' in arg:
+                    v += arg['valAdd']
+                if h >= 1:
+                    h -= 1
+                #print h
+                (r2,g2,b2) = rgbFromHsv(h,s,v)
+                pix[ii,jj] = (r2,g2,b2)
+                    
 
 # #operation = sys.argv[0]
 # #print operation
